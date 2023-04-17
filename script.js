@@ -1,18 +1,18 @@
 if (navigator.msMaxTouchPoints) {
-  $("#slider").addClass("ms-touch");
+  document.getElementById("slider").classList.add("ms-touch");
 } else {
   var slider = {
     el: {
-      slider: $("#slider"),
-      holder: $(".holder"),
-      prev: $(".chevron-left"),
-      next: $(".chevron-right"),
-      sliderDotNav: $(".slider-dotnav"),
+      slider: document.getElementById("slider"),
+      holder: document.querySelector(".holder"),
+      prev: document.querySelector(".chevron-left"),
+      next: document.querySelector(".chevron-right"),
+      sliderDotNav: document.querySelector(".slider-dotnav"),
       dot: undefined,
     },
 
-    slideWidth: $("#slider").width(),
-    numOfSlides: $(".holder > .slide-wrapper").length,
+    slideWidth: document.getElementById("slider").offsetWidth,
+    numOfSlides: document.querySelectorAll(".holder > .slide-wrapper").length,
     touchstartx: undefined,
     touchmovex: undefined,
     movex: undefined,
@@ -22,48 +22,53 @@ if (navigator.msMaxTouchPoints) {
     init: function () {
       this.populateDotNav();
       this.bindUIEvents();
+      console.log(this.slideWidth)
     },
+
 
     populateDotNav: function () {
       for (var a = 0; a < this.numOfSlides; a++) {
-        this.el.sliderDotNav.append(
-          '  <a href="javascript: void(0)" id="dot' +
-            a +
-            '" class="dot' +
-            (a === 0 ? " active" : "") +
-            '">  </a> '
-        );
+        var dot = document.createElement("a");
+        dot.setAttribute("href", "javascript:void(0)");
+        dot.setAttribute("id", "dot" + a);
+        dot.classList.add("dot");
+        if (a === 0) {
+          dot.classList.add("active");
+        }
+        this.el.sliderDotNav.appendChild(dot);
       }
-      this.el.dot = $(".slider-dotnav > .dot");
+      this.el.dot = document.querySelectorAll(".slider-dotnav > .dot");
     },
 
     bindUIEvents: function () {
       // Touch Events
-      this.el.holder.on("touchstart", function (event) {
+      this.el.holder.addEventListener("touchstart", function (event) {
         slider.start(event);
       });
 
-      this.el.holder.on("touchmove", function (event) {
+      this.el.holder.addEventListener("touchmove", function (event) {
         slider.move(event);
       });
 
-      this.el.holder.on("touchend", function (event) {
+      this.el.holder.addEventListener("touchend", function (event) {
         slider.end(event);
       });
 
       // Chevron Previous and Next Events
-      this.el.next.on("click", function (event) {
+      this.el.next.addEventListener("click", function (event) {
         slider.nextSlide(event);
       });
 
-      this.el.prev.on("click", function (event) {
+      this.el.prev.addEventListener("click", function (event) {
         slider.prevSlide(event);
       });
 
       //Dot Navigation Event
-      this.el.dot.on("click", function (event) {
-        slider.dotNavEvent(event);
-      });
+      for (var i = 0; i < this.el.dot.length; i++) {
+        this.el.dot[i].addEventListener("click", function (event) {
+          slider.dotNavEvent(event);
+        });
+      }
     },
 
     start: function (event) {
@@ -74,15 +79,17 @@ if (navigator.msMaxTouchPoints) {
       }, 250);
 
       // Get the original touch position.
-      this.touchstartx = event.originalEvent.touches[0].pageX;
+      this.touchstartx = event.touches[0].pageX;
 
       // The movement gets all janky if there's a transition on the elements.
-      $(".animate").removeClass("animate");
+      document.querySelectorAll(".animate").forEach(function (el) {
+        el.classList.remove("animate");
+      });
     },
 
     move: function (event) {
       // Continuously return touch position.
-      this.touchmovex = event.originalEvent.touches[0].pageX;
+      this.touchmovex = event.touches[0].pageX;
       // Calculate distance to translate holder.
       this.movex =
         this.index * this.slideWidth + (this.touchstartx - this.touchmovex);
@@ -90,10 +97,8 @@ if (navigator.msMaxTouchPoints) {
       var panx = 100 - this.movex / 6;
       if (this.movex < 600) {
         // Makes the holder stop moving when there is no more content.
-        this.el.holder.css(
-          "transform",
-          "translate3d(-" + this.movex + "px,0,0)"
-        );
+        this.el.holder.style.transform =
+          "translate3d(-" + this.movex + "px,0,0)";
       }
     },
 
@@ -142,16 +147,15 @@ if (navigator.msMaxTouchPoints) {
 
     gotoSlide: function () {
       // Move and animate the elements.
-      this.el.holder
-        .addClass("animate")
-        .css(
-          "transform",
-          "translate3d(-" + this.index * this.slideWidth + "px,0,0)"
-        );
+      this.el.holder.classList.add("animate");
+      this.el.holder.style.transform =
+        "translate3d(-" + this.index * this.slideWidth + "px,0,0)";
 
       // Update dot navigation
+      var dotnav = document.querySelector(".slider-dotnav");
+      var activeDot = dotnav.querySelector(".active");
+      activeDot.classList.remove("active");
       var desiredDot = document.getElementById("dot" + this.index);
-      $(".slider-dotnav > .active").removeClass("active");
       desiredDot.classList.add("active");
     },
   };

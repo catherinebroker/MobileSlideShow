@@ -16,17 +16,16 @@ body {
 }
 
 .slider-wrap {
-  width: 300px;
-  height: 100vh;
-  position: absolute;
-  left: 50%;
-  margin-left: -150px;
-  top: 4vh;
+  width: 80vw;
+  height: 88vh;
+  position: relative;
+  left: 10vw;
+  top: 5vh;
 }
 
 .slider {
   width: 100%;
-  height: 90vh;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -48,15 +47,15 @@ body {
 }
 
 .holder {
-  width: 400%;
-  height: 90vh;
+  width: 400%; /* (Number of slides*100%) */
+  height: 100%;
   overflow-y: hidden;
 }
 
 .slide-wrapper {
-  width: 25%;
+  width: 25%; /* Fraction of 1 slide/total number of slides */
   float: left;
-  height: 90vh;
+  height: 100%;
   position: relative;
   overflow: hidden;
 }
@@ -77,11 +76,11 @@ body {
   font-weight: 100;
 }
 
-.slide div {
+/* .slide div {
   width: 300px;
   height: 500px;
   z-index: 0;
-}
+} */
 
 
 /* Specific Slide IDs */
@@ -101,8 +100,12 @@ body {
 
 /* Dot Navigation */
 .slider-dotnav {
-  text-align: center;
-  margin: 10px 0 0 0;
+  display: flex;
+  column-gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  height: 7vh;
 }
 .slider-dotnav a {
   width: 10px;
@@ -132,8 +135,8 @@ body {
   top: 45%;
 }
 .chevron-left {
-  left: 2px;
+  left: 0;
 }
 .chevron-right {
-  right: 2px;
+  right: 0;
 }

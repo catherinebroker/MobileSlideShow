@@ -1,9 +1,5 @@
 if (navigator.msMaxTouchPoints) {
   $("#slider").addClass("ms-touch");
-
-  // $('#slider').on('scroll', function() {
-  //   $('.slide-image').css('transform','translate3d(-' + (100-$(this).scrollLeft()/6) + 'px,0,0)');
-  // });
 } else {
   var slider = {
     el: {
@@ -13,7 +9,6 @@ if (navigator.msMaxTouchPoints) {
       next: $(".chevron-right"),
       sliderDotNav: $(".slider-dotnav"),
       dot: undefined,
-      // imgSlide: $(".slide-image")
     },
 
     slideWidth: $("#slider").width(),
@@ -100,9 +95,6 @@ if (navigator.msMaxTouchPoints) {
           "translate3d(-" + this.movex + "px,0,0)"
         );
       }
-      // if (panx < 100) { // Corrects an edge-case problem where the background image moves without the container moving.
-      //   this.el.imgSlide.css('transform','translate3d(-' + panx + 'px,0,0)');
-      // }
     },
 
     end: function (event) {
@@ -144,8 +136,6 @@ if (navigator.msMaxTouchPoints) {
       // supports slideshows with up to 99 slides, lol (double digits)
       var dotId = clickedDot.id.substring(3, 4);
       this.index = dotId;
-      // $(".slider-dotnav > .active").removeClass("active");
-      // clickedDot.classList.add("active");
 
       this.gotoSlide();
     },
@@ -163,7 +153,6 @@ if (navigator.msMaxTouchPoints) {
       var desiredDot = document.getElementById("dot" + this.index);
       $(".slider-dotnav > .active").removeClass("active");
       desiredDot.classList.add("active");
-      // this.el.imgSlide.addClass('animate').css('transform', 'translate3d(-' + 100-this.index*50 + 'px,0,0)');
     },
   };
 

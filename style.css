@@ -76,13 +76,6 @@ body {
   font-weight: 100;
 }
 
-/* .slide div {
-  width: 300px;
-  height: 500px;
-  z-index: 0;
-} */
-
-
 /* Specific Slide IDs */
 #slide-0 {
   background-color: #B68D40;
@@ -123,20 +116,20 @@ body {
 
 
 /* Chevron Navigation */
-.horizontal {
+.chevron-left-wrapper, .chevron-right-wrapper {
+  position: absolute;
+  top: 45%;
   display: flex;
-  flex-direction: row;
-}
-.chevron-left, .chevron-right {
+  justify-content: center;
+  width: 10vw;
   color: #122620;
   font-family: 'Josefin Slab', serif;
   font-size: 100px;
-  position: absolute;
-  top: 45%;
 }
-.chevron-left {
+
+.chevron-left-wrapper {
   left: 0;
 }
-.chevron-right {
+.chevron-right-wrapper {
   right: 0;
 }

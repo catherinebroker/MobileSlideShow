@@ -22,7 +22,6 @@ if (navigator.msMaxTouchPoints) {
     init: function () {
       this.populateDotNav();
       this.bindUIEvents();
-      console.log(this.slideWidth)
     },
 
 

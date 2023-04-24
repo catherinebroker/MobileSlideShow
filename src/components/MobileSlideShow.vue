@@ -1,42 +1,109 @@
 <template>
-  <div>
-    <a class="chevron-left">&#8249;</a>
+  <div ref="root">
+    <a @click="prevSlide()" class="chevron-left">&#8249;</a>
 
     <div class="slider-wrap">
       <div class="slider" id="slider">
         <div class="holder">
           <div class="slide-wrapper">
-            <div id="slide-0" class="slide"></div>
-            <span class="slideNumber">0</span>
+            <div :id="slides[0].slideId" class="slide"></div>
+            <span class="slideNumber">{{ slides[0].slideNumber }}</span>
           </div>
           <div class="slide-wrapper">
-            <div id="slide-1" class="slide"></div>
-            <span class="slideNumber">1</span>
+            <div :id="slides[1].slideId" class="slide"></div>
+            <span class="slideNumber">{{ slides[1].slideNumber }}</span>
           </div>
           <div class="slide-wrapper">
-            <div id="slide-2" class="slide"></div>
-            <span class="slideNumber">2</span>
+            <div :id="slides[2].slideId" class="slide"></div>
+            <span class="slideNumber">{{ slides[2].slideNumber }}</span>
           </div>
           <div class="slide-wrapper">
-            <div id="slide-3" class="slide"></div>
-            <span class="slideNumber">3</span>
+            <div :id="slides[3].slideId" class="slide"></div>
+            <span class="slideNumber">{{ slides[3].slideNumber }}</span>
           </div>
         </div>
       </div>
 
-      <nav class="slider-dotnav"></nav>
+      <nav class="slider-dotnav">
+        <a
+          v-for="slides in slides"
+          :key="slides.slideNumber"
+          href="javascript:void(0)"
+          :class="{ active: slides.slideNumber === 0 }"
+          :id="'dot-' + slides.slideNumber"
+          @click="dotNavEvent(this)"
+        >
+        </a>
+        <!-- <a href="javascript:void(0)" class="dot active" id="dot-0" @click="dotNavEvent(this)"></a>
+        <a href="javascript:void(0)" class="dot" id="dot-1" @click="dotNavEvent(this)"></a>
+        <a href="javascript:void(0)" class="dot" id="dot-2" @click="dotNavEvent(this)"></a>
+        <a href="javascript:void(0)" class="dot" id="dot-3" @click="dotNavEvent(this)"></a> -->
+      </nav>
     </div>
 
-    <a class="chevron-right">&#8250;</a>
+    <a @click="nextSlide()" class="chevron-right">&#8250;</a>
   </div>
 </template>
 
 <script>
+import slides from "../data/slides";
+
 export default {
   name: "MobileSlideShow",
+  data() {
+    return {
+      slides,
+      dotNav: [],
+      index: 0,
+    };
+  },
+  computed: {
+    slideInfo() {
+      return {
+        holder: this.$el.querySelector(".holder"),
+        currentSlide: this.slides[this.index],
+        slideWidth: this.$el.querySelector(".slider").offsetWidth,
+      };
+    },
+  },
   methods: {
-    testMethod() {
-      console.log("click!");
+    prevSlide() {
+      if (this.index > 0) {
+        this.index--;
+      }
+
+      this.gotoSlide();
+    },
+
+    nextSlide() {
+      // if (this.index > slides.slides.length)
+      if (this.index < 3) {
+        this.index++;
+      }
+
+      this.gotoSlide();
+    },
+
+    dotNavEvent() {
+      var clickedDotId = event.target.id.substring(4, 5);
+      // supports slideshows with up to 99 slides, lol (double digits)
+      this.index = clickedDotId;
+      this.gotoSlide();
+    },
+
+    gotoSlide() {
+      // Move and animate the elements.
+      this.slideInfo.holder.classList.add("animate");
+      this.slideInfo.holder.style.transform =
+        "translate3d(-" + this.index * this.slideInfo.slideWidth + "px,0,0)";
+
+      // Update dot navigation
+      var activeDot = document
+        .querySelector(".slider-dotnav")
+        .querySelector(".active");
+      var desiredDot = document.getElementById("dot-" + this.index);
+      activeDot.classList.remove("active");
+      desiredDot.classList.add("active");
     },
   },
 };

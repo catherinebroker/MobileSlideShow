@@ -3,7 +3,14 @@
     <a @click="prevSlide()" class="chevron-left">&#8249;</a>
 
     <div class="slider-wrap">
-      <div class="slider" id="slider">
+      <div
+        class="slider"
+        id="slider"
+        ref="slider"
+        @touchstart="start"
+        @touchmove="move"
+        @touchend="end"
+      >
         <div class="holder">
           <div class="slide-wrapper">
             <div :id="slides[0].slideId" class="slide"></div>
@@ -53,8 +60,12 @@ export default {
   data() {
     return {
       slides,
-      dotNav: [],
       index: 0,
+      touchstartx: undefined,
+      touchmovex: undefined,
+      movex: 0,
+      longTouch: undefined,
+    
     };
   },
   computed: {
@@ -62,11 +73,60 @@ export default {
       return {
         holder: this.$el.querySelector(".holder"),
         currentSlide: this.slides[this.index],
-        slideWidth: this.$el.querySelector(".slider").offsetWidth,
+        slideWidth: this.$refs.slider.clientWidth,
       };
     },
   },
   methods: {
+    start(event) {
+      // Test for flick.
+      this.longTouch = false;
+      setTimeout(function () {
+        window.slider.longTouch = true;
+      }, 250);
+
+      // Get the original touch position.
+      this.touchstartx = event.touches[0].clientX;
+
+      // The movement gets all janky if there's a transition on the elements.
+      document.querySelectorAll(".animate").forEach(function (el) {
+        el.classList.remove("animate");
+      });
+    },
+
+    move(event) {
+      // Continuously return touch position.
+      this.touchmovex = event.touches[0].clientX;
+      // Calculate distance to translate holder.
+      this.movex =
+        this.index * this.slideInfo.slideWidth + (this.touchstartx - this.touchmovex);
+
+      // Defines the speed the images should move at.
+      var panx = 100 - this.movex / 6;
+      if (this.movex < 600) {
+        // Makes the holder stop moving when there is no more content.
+        this.slideInfo.holder.style.transform = "translate3d(-" + this.movex + "px,0,0)";
+      }
+    },
+
+    end(event) {
+      // Calculate the distance swiped.
+      var absMove = Math.abs(this.index * this.slideInfo.slideWidth - this.movex);
+      // Calculate the index. All other calculations are based on the index.
+      if (absMove > this.slideInfo.slideWidth / 2 || this.longTouch === false) {
+        if (this.movex > this.index * this.slideInfo.slideWidth && this.index < 3) {
+          this.index++;
+        } else if (
+          this.movex < this.index * this.slideInfo.slideWidth &&
+          this.index > 0
+        ) {
+          this.index--;
+        }
+      }
+      
+      this.gotoSlide();
+    },
+
     prevSlide() {
       if (this.index > 0) {
         this.index--;
@@ -106,6 +166,7 @@ export default {
       desiredDot.classList.add("active");
     },
   },
+  
 };
 </script>
 

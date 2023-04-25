@@ -76,27 +76,6 @@ body {
   font-weight: 100;
 }
 
-/* .slide div {
-  width: 300px;
-  height: 500px;
-  z-index: 0;
-} */
-
-
-/* Specific Slide IDs */
-#slide-0 {
-  background-color: #B68D40;
-}
-#slide-1 {
-  background-color: #F4EBD0;
-}
-#slide-2 {
-  background-color: #D6AD60;
-}
-#slide-3 {
-  background-color: #B68D40;
-}
-
 
 /* Dot Navigation */
 .slider-dotnav {

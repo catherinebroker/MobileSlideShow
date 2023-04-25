@@ -12,21 +12,9 @@
         @touchend="end"
       >
         <div class="holder">
-          <div class="slide-wrapper">
-            <div :id="slides[0].slideId" class="slide"></div>
-            <span class="slideNumber">{{ slides[0].slideNumber }}</span>
-          </div>
-          <div class="slide-wrapper">
-            <div :id="slides[1].slideId" class="slide"></div>
-            <span class="slideNumber">{{ slides[1].slideNumber }}</span>
-          </div>
-          <div class="slide-wrapper">
-            <div :id="slides[2].slideId" class="slide"></div>
-            <span class="slideNumber">{{ slides[2].slideNumber }}</span>
-          </div>
-          <div class="slide-wrapper">
-            <div :id="slides[3].slideId" class="slide"></div>
-            <span class="slideNumber">{{ slides[3].slideNumber }}</span>
+          <div v-for="slides in slides" class="slide-wrapper">
+            <div :id="slides.slideId" class="slide" :style="{'background-color': slides.backgroundColor}"></div>
+            <span class="slideNumber">{{ slides.slideNumber }}</span>
           </div>
         </div>
       </div>
@@ -41,10 +29,6 @@
           @click="dotNavEvent(this)"
         >
         </a>
-        <!-- <a href="javascript:void(0)" class="dot active" id="dot-0" @click="dotNavEvent(this)"></a>
-        <a href="javascript:void(0)" class="dot" id="dot-1" @click="dotNavEvent(this)"></a>
-        <a href="javascript:void(0)" class="dot" id="dot-2" @click="dotNavEvent(this)"></a>
-        <a href="javascript:void(0)" class="dot" id="dot-3" @click="dotNavEvent(this)"></a> -->
       </nav>
     </div>
 
@@ -65,7 +49,6 @@ export default {
       touchmovex: undefined,
       movex: 0,
       longTouch: undefined,
-    
     };
   },
   computed: {
@@ -99,22 +82,29 @@ export default {
       this.touchmovex = event.touches[0].clientX;
       // Calculate distance to translate holder.
       this.movex =
-        this.index * this.slideInfo.slideWidth + (this.touchstartx - this.touchmovex);
+        this.index * this.slideInfo.slideWidth +
+        (this.touchstartx - this.touchmovex);
 
       // Defines the speed the images should move at.
       var panx = 100 - this.movex / 6;
       if (this.movex < 600) {
         // Makes the holder stop moving when there is no more content.
-        this.slideInfo.holder.style.transform = "translate3d(-" + this.movex + "px,0,0)";
+        this.slideInfo.holder.style.transform =
+          "translate3d(-" + this.movex + "px,0,0)";
       }
     },
 
     end(event) {
       // Calculate the distance swiped.
-      var absMove = Math.abs(this.index * this.slideInfo.slideWidth - this.movex);
+      var absMove = Math.abs(
+        this.index * this.slideInfo.slideWidth - this.movex
+      );
       // Calculate the index. All other calculations are based on the index.
       if (absMove > this.slideInfo.slideWidth / 2 || this.longTouch === false) {
-        if (this.movex > this.index * this.slideInfo.slideWidth && this.index < 3) {
+        if (
+          this.movex > this.index * this.slideInfo.slideWidth &&
+          this.index < 3
+        ) {
           this.index++;
         } else if (
           this.movex < this.index * this.slideInfo.slideWidth &&
@@ -123,7 +113,7 @@ export default {
           this.index--;
         }
       }
-      
+
       this.gotoSlide();
     },
 
@@ -166,7 +156,6 @@ export default {
       desiredDot.classList.add("active");
     },
   },
-  
 };
 </script>
 

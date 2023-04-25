@@ -5,4 +5,4 @@ Image or div slider for mobile devices. Supports changing slides by swiping, che
 
 ## jQuery
 
-## Vue.JS 3
+## Vue.js 3

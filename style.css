@@ -1,9 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Josefin+Slab:100);
 
-.animate {
-  transition: transform 0.3s ease-out;
-}
-
 html,
 body {
   height: 100%;
@@ -13,6 +9,10 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+}
+
+.animate {
+  transition: transform 0.3s ease-out;
 }
 
 .slider-wrap {
@@ -40,6 +40,7 @@ body {
   /* Prevents Metro from swiping to the next tab or app. */
   
   -ms-scroll-snap-type: mandatory;
+  scroll-snap-type: mandatory;
   /* Forces a snap scroll behavior on your images. */
   
   -ms-scroll-snap-points-x: snapInterval(0%, 100%);
